@@ -49,8 +49,9 @@ Step 3: Intialize working directory
 
 Step 4: Execute the actions proposed in a Terraform plan.
 
->terraform plan
->terraform apply
+> terraform plan
+
+> terraform apply
 
 Result : All the resources in confluent cloud will be created and pipeline will start working
 
