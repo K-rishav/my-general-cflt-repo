@@ -60,9 +60,13 @@ Result : All the resources in confluent cloud will be created and pipeline will 
 References :
 
 Confluent Provider : https://registry.terraform.io/providers/confluentinc/confluent/latest/docs
+
 Confluent Provider terraform sample project : https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/guides/sample-project
+
 RBAC: https://docs.confluent.io/cloud/current/access-management/access-control/cloud-rbac.html
+
 BigQuerySinkConnector : https://docs.confluent.io/cloud/current/connectors/cc-gcp-bigquery-sink.html#cc-bigquery-json-config-format
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
