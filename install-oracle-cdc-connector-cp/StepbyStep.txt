@@ -1,0 +1,84 @@
+------------------------------------------------------------------------------------------------------------------------------------------------
+Topic : Steps to install a Self managed Oracle CDC Connector
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+prerequisites: 
+https://docs.confluent.io/operator/current/co-quickstart.html#co-quickstart
+
+Steps: 
+1. Create Kubkubernetes Secrets 
+
+    a. ccloud-credentials : this file contains api key and secret to access the confluent cloud ( api key can be global or granular , recommended : granular )
+        
+        a.1 create base64 of this file content
+            > base64 -i ccloud-credentials.txt 
+
+        a.2  add the base64 output in cfk-secrets.yaml
+
+    b. ccloud-sr-credentials : this file contains api key and secret to access the Schema Registry
+
+        b.1 create base64 of this file content
+            > base64 -i ccloud-sr-credentials.txt
+
+        b.2  add the base64 output in cfk-secrets.yaml
+
+    c. oracle-credits: this file contains uname and passwd to access oracle db, also it contains api key to access Confluent cloud
+
+        c.1 create base64 of this file content
+            > base64 -i oracle-credits.txt
+
+        c.2  add the base64 output in cfk-secrets.yaml
+
+2. Next , run  "kubectl create -f cfk-secrets.yaml" command to create secrets
+
+list secrets : kubectl get secrets 
+
+3. Note: Follow this step only if kafka-connect is not setup 
+spin up a kafka connect cluster in Kubernetes ( Here we are using Azure Kuberenetes Service ) 
+
+Refer : kafka-connect.yaml (This is a deployement file to run kafka connect on CP)
+Command:  kubectl apply -f kafka-connect.yaml
+
+Check if pod is running: 
+
+> kubectl get pods                   
+NAME                                  READY   STATUS     RESTARTS   AGE
+confluent-operator-5cb69bc598-qtccg   1/1     Running    0          43h
+connect-cfk-1-0                       1/1     Running   0          32m
+
+Note : pod connect-cfk-1-0 is running
+
+4. Install Oracle CDC Connector in the pod
+    Note : Enable auto create topic config in broker otherwise connector will fail to create topic (or create a topic manually in Confluent Cloud )
+    Download the kafka zip from https://www.apache.org/dyn/closer.cgi?path=/kafka/3.4.0/kafka_2.13-3.4.0.tgz
+   
+    Warning : Run this Command only if you want to enable auto create topic:
+    eg: kafka_2.13-3.4.0/bin/kafka-configs.sh --bootstrap-server <bootstrap-ip>:9092 --command-config client.properties --entity-type brokers --entity-default --alter --add-config auto.create.topics.enable=true
+
+    4.1 Refer "oracle-cdc-connector.yaml" for oracle cdc template, make changes as per your setup
+    4.2 Run 
+        Install connector
+        > kubectl apply -f oracle-cdc-connector.yaml
+
+        Check connector status
+        > kubectl get connectors
+
+        Describe connector
+        > kubectl describe connnectors
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+How to debug if Oracle CDC is throwing error:  
+
+1. Check pods logs
+2. Check Secret inside pods
+4. list secrets 
+    > kubectl get secrets 
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Ref : 
+Oracle CDC Connector : https://docs.confluent.io/kafka-connectors/oracle-cdc/current/overview.html
+Blog on Oracle CDC : https://www.confluent.io/blog/introducing-confluent-oracle-cdc-connector/?_ga=2.6860274.171748382.1684737040-1801651524.1680502674&_gac=1.225518184.1684505406.CjwKCAjwvJyjBhApEiwAWz2nLRrFzB0Qcz_lZnDOI6mf-avHAzmWlYdRHbphl6QPHlbIgxL5vR9G8xoCfZEQAvD_BwE&_gl=1*tvhb6q*_ga*MTgwMTY1MTUyNC4xNjgwNTAyNjc0*_ga_D2D3EGKSGD*MTY4NTA0MDMwMS4xMzYuMC4xNjg1MDQwMzAxLjYwLjAuMA..
+K8s cheatsheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+--------------------------------------------------------------------------------------------------------------------------------------------------

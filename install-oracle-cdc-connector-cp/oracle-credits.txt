@@ -1,0 +1,4 @@
+pgsql_user=<oracle-uname>
+pgsql_pass=<oracle-passwd>
+username=<ccloudapi-key>
+password=<ccloudapi-secret>

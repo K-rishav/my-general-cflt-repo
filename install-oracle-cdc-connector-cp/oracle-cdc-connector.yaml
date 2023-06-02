@@ -1,0 +1,63 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: oracle-cdc
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.oracle.cdc.OracleCdcSourceConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect-cfk-1
+  configs:
+    connector.class: io.confluent.connect.oracle.cdc.OracleCdcSourceConnector
+    name: oracle-cdc
+    kafka.auth.mode: KAFKA_API_KEY
+    kafka.api.key: ${file:/mnt/secrets/connector-secrets/connect.txt:username}
+    kafka.api.secret: ${file:/mnt/secrets/connector-secrets/connect.txt:password}
+    oracle.server: 
+    oracle.port: "1521"
+    oracle.sid: oratest1
+    oracle.username: ${file:/mnt/secrets/connector-secrets-1/connect.txt:pgsql_user}
+    oracle.password: ${file:/mnt/secrets/connector-secrets-1/connect.txt:pgsql_pass}
+    oracle.fan.events.enable: "false"
+    table.inclusion.regex: "ORATEST1.system.customers"
+    start.from: "snapshot"
+    oracle.supplemental.log.level: "full"
+    emit.tombstone.on.delete: "false"
+    behavior.on.dictionary.mismatch: "fail"
+    behavior.on.unparsable.statement: "fail"
+    db.timezone: "UTC"
+    redo.log.startup.polling.limit.ms: "300000"
+    heartbeat.interval.ms: "0"
+    query.timeout.ms: "300000"
+    max.batch.size: "1000"
+    poll.linger.ms: "5000"
+    max.buffer.size: "0"
+    redo.log.poll.interval.ms: "500"
+    snapshot.row.fetch.size: "2000"
+    redo.log.row.fetch.size: "5000"
+    oracle.validation.result.fetch.size: "5000"
+    oracle.dictionary.mode: "auto"
+    output.table.name.field: "table"
+    output.scn.field: "scn"
+    output.op.type.field: "op_type"
+    output.op.ts.field: "op_ts"
+    output.current.ts.field: "current_ts"
+    output.row.id.field: "row_id"
+    output.username.field: "username"
+    output.op.type.read.value: "R"
+    output.op.type.insert.value: "I"
+    output.op.type.update.value: "U"
+    output.op.type.delete.value: "D"
+    output.op.type.truncate.value: "T"
+    snapshot.by.table.partitions: "false"
+    snapshot.threads.per.task: "4"
+    enable.large.lob.object.support: "false"
+    numeric.mapping: "none"
+    numeric.default.scale: "127"
+    oracle.date.mapping: "timestamp"
+    output.data.key.format: JSON
+    output.data.value.format: JSON
+    tasks.max: "1"
+    table.topic.name.template: "dummy"
+---
