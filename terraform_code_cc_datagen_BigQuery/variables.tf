@@ -10,7 +10,7 @@ variable "confluent_cloud_api_secret" {
 }
 
 variable "customer_region" {
-  description = "The region of the BQ"
+  description = "The region of the GCP BigQuery"
   type        = string
   #default =  "us-central1"
 }

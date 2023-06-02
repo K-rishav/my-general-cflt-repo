@@ -51,7 +51,7 @@ resource "confluent_role_binding" "app-manager-kafka-cluster-admin" {
   crn_pattern = confluent_kafka_cluster.basic.rbac_crn
 }
 
-#create api key to access
+#create api key and assign it to service account "app-manager"
 resource "confluent_api_key" "app-manager-kafka-api-key" {
   display_name = "app-manager-kafka-api-key"
   description  = "Kafka API Key that is owned by 'app-manager' service account"
@@ -75,7 +75,7 @@ resource "confluent_api_key" "app-manager-kafka-api-key" {
   ]
 }
 
-#create a topic
+#create a topic name "orders"
 resource "confluent_kafka_topic" "orders" {
   kafka_cluster {
     id = confluent_kafka_cluster.basic.id
@@ -111,7 +111,6 @@ resource "confluent_connector" "datagen-source" {
 
 
   depends_on = [
-    #confluent_kafka_acl.describe-basic-cluster,
     confluent_api_key.app-manager-kafka-api-key,
   ]
 }
@@ -124,6 +123,7 @@ resource "confluent_service_account" "app-connector-sink-BQ" {
   description  = "Service account of BQ Sink Connector to consume from 'orders' topic "
 }
 
+#create acl 
 resource "confluent_kafka_acl" "app-connector-sink-BQ-describe-on-cluster" {
   kafka_cluster {
     id = confluent_kafka_cluster.basic.id
@@ -289,6 +289,7 @@ resource "confluent_kafka_acl" "app-connector-sink-BQ-read-on-connect-lcc-group"
 
 ######################## BigQuery Sink Connector ###########################################
 
+#create BigQuerySinkConnector
 resource "confluent_connector" "confluent-bigquery-sink" {
   environment {
     id = confluent_environment.development.id
@@ -306,8 +307,8 @@ resource "confluent_connector" "confluent-bigquery-sink" {
     "name"                     = "BQ_SINKConnector_0"
     "kafka.auth.mode"          = "SERVICE_ACCOUNT"
     "kafka.service.account.id" = confluent_service_account.app-connector-sink-BQ.id
-    "project"                  = "sales-engineering-206314"
-    "datasets"                 = "rishav_dataset"
+    "project"                  = "<gcp-project-id>"
+    "datasets"                 = "<dataset-name>"
     "sanitizeTopics"           = "true"
     "autoUpdateSchemas"        = "true"
     "sanitizeFieldNames"       = "true"
