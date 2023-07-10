@@ -57,6 +57,15 @@ resource "confluent_role_binding" "confluent_role_binding_connectors" {
   #crn_pattern = "${data.confluent_kafka_cluster.standard-1.rbac_crn}/connector=DatagenSourceConnector_1"
 }
 
+#4. Pipeline
+resource "confluent_role_binding" "confluent_role_binding_pipeline" {
+  
+  for_each = var.users 
+  role_name   = "DeveloperRead"
+  principal   = "User:${each.value.id}"
+  crn_pattern = "${data.confluent_kafka_cluster.standard-1.rbac_crn}/pipeline=*"
+}
+
 
 
 
