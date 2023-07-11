@@ -66,6 +66,26 @@ resource "confluent_role_binding" "confluent_role_binding_pipeline" {
   crn_pattern = "${data.confluent_kafka_cluster.standard-1.rbac_crn}/pipeline=*"
 }
 
+#Schema Registry Cluster data source
+#Method 1 : using name
+#https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/confluent_schema_registry_cluster
+data "confluent_schema_registry_cluster" "sr_example_using_name" {
+  display_name = "Stream Governance Package"
+  environment {
+    id = data.confluent_environment.env.id
+  }
+}
+
+#Schema Registry Cluster data source
+#Method 2 : using id
+#https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/data-sources/confluent_schema_registry_cluster
+data "confluent_schema_registry_cluster" "sr_example_using_id" {
+  id = "lsrc-v1ny1n"
+  environment {
+    id = data.confluent_environment.env.id
+  }
+}
+
 
 
 
