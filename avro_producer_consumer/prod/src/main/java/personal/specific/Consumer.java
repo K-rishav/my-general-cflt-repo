@@ -17,7 +17,7 @@ public class Consumer {
     public static void main(String[] args) {
         try {
             // Add the path to your properties file here
-            final Properties props = loadConfig("/Users/rikumar/Development/java/prod/src/main/java/personal/resources/client.properties");
+            final Properties props = loadConfig("/my-general-cflt-repo/avro_producer_consumer/prod/src/main/java/personal/resources/client.properties");
             props.put(ConsumerConfig.GROUP_ID_CONFIG, "json-schema-test");
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
