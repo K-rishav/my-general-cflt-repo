@@ -156,3 +156,26 @@ resource "confluent_schema" "avro-sample-v2" {
   recreate_on_update = true
   depends_on = [ confluent_schema.avro-sample-v1 ]
 }
+
+# Case: trying to create schema versions in order eg schema-1 , schema-2, schema-3 
+# using count
+# for a similar schema subject  - have multiple versions in format <schema-name>_n where n: 1 to n
+# Terraform doesn't maintain any order while creating the resources
+# Results :  Unordered creation of resources
+
+resource "confluent_schema" "avro-sample-list-2" {
+  count = 3
+ schema_registry_cluster {
+    id = confluent_schema_registry_cluster.essentials.id
+  }
+  rest_endpoint = confluent_schema_registry_cluster.essentials.rest_endpoint
+  subject_name = "avro-sample-value-list-2"
+  format = "AVRO"
+  schema = file("./schemas/avro/sample_v${count.index + 1}.avsc")
+  credentials {
+    key    = confluent_api_key.env-manager-schema-registry-api-key.id
+    secret = confluent_api_key.env-manager-schema-registry-api-key.secret
+  }
+  recreate_on_update = true
+}
+
