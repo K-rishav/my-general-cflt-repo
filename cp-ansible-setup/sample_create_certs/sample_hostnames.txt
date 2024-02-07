@@ -1,0 +1,10 @@
+ip-10-0-2-5.us-east-2.compute.internal
+ip-10-0-2-165.us-east-2.compute.internal
+ip-10-0-2-43.us-east-2.compute.internal
+ip-10-0-2-139.us-east-2.compute.internal
+ip-10-0-2-168.us-east-2.compute.internal
+ip-10-0-2-22.us-east-2.compute.internal
+ip-10-0-2-74.us-east-2.compute.internal
+ip-10-0-2-67.us-east-2.compute.internal
+ip-10-0-2-56.us-east-2.compute.internal
+ip-10-0-2-228.us-east-2.compute.internal

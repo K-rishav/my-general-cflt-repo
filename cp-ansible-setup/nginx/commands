@@ -1,0 +1,10 @@
+sudo apt update
+sudo apt install nginx
+
+sudo systemctl status nginx
+
+vi /etc/nginx/nginx.conf
+
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
