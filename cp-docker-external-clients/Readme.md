@@ -4,4 +4,4 @@ This docker compose file runs cp components on docker and it is configured to ad
 > docker compose up -d
 
 [local machine/mac]
-> kcat -b <ec2-public-ip>:9092 -L
+> kcat -b ec2-public-ip:9092 -L
