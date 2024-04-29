@@ -31,7 +31,7 @@ terraform apply -target module.instances
 - **Control Center:** 1 EC2 instance
 - **Ksql:** 1 EC2 instance
 
-### SCP public key to Bastion host to be used by ansible in hosts.yml
+### SCP private key to Bastion host to be used by ansible in hosts.yml
 
 ##  SSH to Bastion Host and run these commands :
 
