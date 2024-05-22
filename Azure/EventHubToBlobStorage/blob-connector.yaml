@@ -1,0 +1,22 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: azureblobstoragesink
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.azure.blob.AzureBlobStorageSinkConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    confluent.topic.bootstrap.servers : "kafka.confluent.svc.cluster.local:9092"
+    confluent.topic.replication.factor : "1"
+    value.converter.schema.registry.url : "http://schemaregistry.confluent.svc.cluster.local:8081"
+    topics: "test"
+    tasks.max: "1"
+    azblob.account.name: "<removed>"
+    azblob.account.key: "<removed>"
+    azblob.container.name: "<removed>"
+    format.class: "io.confluent.connect.azure.blob.format.json.JsonFormat"
+    flush.size: "3"

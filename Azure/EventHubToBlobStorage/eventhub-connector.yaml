@@ -1,0 +1,25 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: eventhubhsourceconnector2
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.azure.eventhubs.EventHubsSourceConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    confluent.topic.bootstrap.servers : "kafka.confluent.svc.cluster.local:9092"
+    confluent.topic.replication.factor : "1"
+    value.converter.schema.registry.url : "http://schemaregistry.confluent.svc.cluster.local:8081"
+    kafka.topic: "test"
+    tasks.max: "1"
+    max.events: "1"
+    azure.eventhubs.sas.keyname: "<removed>"
+    azure.eventhubs.sas.key: "<removed>"
+    azure.eventhubs.namespace: "<removed>"
+    azure.eventhubs.hub.name: "<removed>"
+    key.converter: "org.apache.kafka.connect.storage.StringConverter"
+    value.converter: "org.apache.kafka.connect.converters.ByteArrayConverter"
+
