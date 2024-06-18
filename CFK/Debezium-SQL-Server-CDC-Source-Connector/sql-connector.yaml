@@ -1,0 +1,27 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: sqlconnector
+  namespace: confluent
+spec:
+  class: "io.debezium.connector.sqlserver.SqlServerConnector"
+  taskMax: 1
+  connectClusterRef:
+    name: connect
+  configs:
+    database.hostname: "<removed>"
+    database.port: "1433"
+    database.user: "<removed>"
+    database.password: "<removed>"
+    database.names: "<removed>"
+    topic.prefix: "test"
+    database.encrypt: "false"
+    table.include.list: "<removed>"
+    schema.history.internal.kafka.bootstrap.servers: "http://kafka.confluent.svc.cluster.local:9092"
+    schema.history.internal.kafka.topic: "schema.fullfillment"
+    database.server.name: "server1"
+    value.converter.schema.registry.url: "http://schemaregistry.confluent.svc.cluster.local:8081"
+    key.converter.schema.registry.url: "http://schemaregistry.confluent.svc.cluster.local:8081"
+    schema.history.internal.kafka.bootstrap.servers": "http://kafka.confluent.svc.cluster.local:9092"
+    schema.history.internal.kafka.topic": "schema_history"
